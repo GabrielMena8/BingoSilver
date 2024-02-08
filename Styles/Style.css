@@ -1,0 +1,65 @@
+:root{
+
+    --main: #cc2649;
+    --secondary: #992c4b;
+    --tertiary: #66324c;
+    --quaternary: #33384e;
+    --quinary: #003e4f;
+    --senary: #005f6a;
+    --mainFont: 'Sixtyfour', sans-serif;
+
+}
+
+*, *::before, *::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html
+{
+    font-size: 62.5%;
+}
+
+body{
+    font-family: var(--mainFont);
+    font-size: 1.6rem;
+    line-height: 1.6;
+    background-color: var(--quaternary);
+}
+h1{
+    font-size: 3.6rem;
+    font-family: var(--mainFont);
+    color: var(--main);
+    text-align: center;
+    margin: 2rem 0;
+}
+.container{
+    width: 90%;
+    margin: 0 auto;
+    max-width: 120rem;
+    display: flex;
+    flex-direction: column;
+}
+h2{
+    font-size: 3rem;
+    font-family: var(--mainFont);
+    color: var(--main);
+    margin: 2rem 0;
+}
+
+.leaderboard{
+    max-width: fit-content;
+   
+}   
+
+.players{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: var(--quinary);
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+}
