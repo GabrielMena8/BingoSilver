@@ -270,11 +270,30 @@ h2 {
     transition: all 0.3s;
 }
 
+.button-start{
+    display: block;
+    margin: 2rem auto;
+    padding: 2rem 4rem;
+    font-size: 2.2rem;
+    font-weight: bolder;
+    text-transform: uppercase;
+    background-color: var(--main);
+    color: var(--quaternary);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    text-align: center;
+    text-decoration: none;
+
+}
 
 
 
 
-/*  */
+
+/*Contenedor para toda la zona de juegos, quiza lo cambio luego, anotar*/
+
 .playzone{
     display: flex;
     flex-direction: column;
@@ -286,7 +305,7 @@ h2 {
     
 }
 
-
+/*Contenedor de los jugadores*/
  .player-list{
     display: flex;
     flex-direction: row;
@@ -295,11 +314,11 @@ h2 {
     align-items: center;
     margin: 2rem 0;
     padding: 2rem;
- 
-  
-
 } 
 
+
+
+/* Jugadores  */
 .player-card{
     padding: 2rem;
     background-color: var(--senary);
