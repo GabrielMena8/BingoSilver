@@ -11,7 +11,7 @@ const HTMLleaderboard = document.querySelector('.leaderboard');
 
 let size=0;
 
-
+let turnos = 25;
 
 
 const buttonStart = document.querySelector('.button-start');
@@ -180,7 +180,7 @@ playzone.addEventListener('click', (e) => {
         
     }
     if (e.target.classList.contains('button-sorteo')) {
-        sorteo();
+        sorteo(turnos);
     }
 
 });
@@ -303,26 +303,57 @@ function agregarBotonSorteo() {
 
 
 
-function sorteo() {
+function sorteo(turnosrestantes) {
     let numeros = generateUniqueRandomNumbers();
     let numero = numeros[Math.floor(Math.random() * numeros.length)];
-    //Array con los numeros que ya han salido
     let numerosSalidos = [];
+
     numerosSalidos.push(numero);
-    console.log(numerosSalidos);
+
+    if (turnosrestantes!=0) {
+      mostrarNumeroSorteado(numero,turnos);
+         turnos--;
+         
+    }
+    else{
+        alert('No hay mas turnos');
+        limpiarzone();
+    }
+
 
     
-    mostrarNumeroSorteado(numero);
 }
 
-function mostrarNumeroSorteado(numero) {
+function limpiarzone(){
+    const tablero = document.querySelector('.tablero');
+    
+    while (tablero.firstChild) {
+        tablero.removeChild(tablero.firstChild);
+    }
+    playzone.removeChild(tablero);
+
+
+    while (playzone.firstChild) {
+
+        // mandar a la leaderboard
+        //registrarPuntuacion();
+
+        playzone.removeChild(playzone.firstChild);
+    }
+
+}
+
+function mostrarNumeroSorteado(numero, turnosrestantes) {
     const numeroSorteado = document.createElement('h2');
-
-
+    const turnosRestantes = document.createElement('h2');
+    turnosRestantes.textContent = `Turnos restantes: ${turnosrestantes}`;
+    playzone.appendChild(turnosRestantes);
 
     numeroSorteado.textContent = `El numero sorteado es: ${numero}`;
     playzone.appendChild(numeroSorteado);
     compararNumerosCelda(numero);
+    
+
 }
 
 
@@ -333,43 +364,132 @@ function compararNumerosCelda(numero) {
         celdas.forEach(celda => {
             if (parseInt(celda.textContent) === numero) {
                 celda.classList.add('selected_number');
+
+                compararLineas(size);
+                Bingo(size);
             }
         });
     });
-    compararLinea(size);
+    
+   
 }
 
 
+/*Ustedes los preparadores me van a tener que pagar reparaciones mentales por hacerme trabajar con matrices de nuevo*/ 
 
-function compararLinea(n) { //Donde n es el numero de celdas por fila o columna
+function compararLineaHorizontal(size){
     const cartones = document.querySelectorAll('.carton');
-
-    console.log(n);
     cartones.forEach(carton => {
         const celdas = carton.querySelectorAll('.celda');
-
         let selected = 0;
-
-        celdas.forEach(celda => {
-            if (celda.classList.contains('selected_number')) {
-                selected++;
-                console.log(selected);
-
+        for(let i=0; i<size; i++){
+            selected = 0;
+            for(let j=0; j<size; j++){
+                if(celdas[j*size+i].classList.contains('selected_number')){
+                    selected++;
+                }
             }
-        });
+            if(selected === size){
+                alert(`El jugador ${carton.id} ha completado una linea Horizontal`);
+                listaJugadores.player.forEach(jugador => {
+                    if (jugador.id === parseInt(carton.id)) {
+                        jugador.Puntuacion += 4;
+                        console.log(jugador.Puntuacion);
+                    }
+                    
+                });
+                return;
+            }
+        }
+    });
+}
 
 
-        if (selected === n) {
-            alert(`El jugador ${carton.id} ha completado una linea`);
+function compararLineaVertical(size){
+    const cartones = document.querySelectorAll('.carton');
+    cartones.forEach(carton => {
+        const celdas = carton.querySelectorAll('.celda');
+        let selected = 0;
+        for(let i=0; i<size; i++){
+            selected = 0;
+            for(let j=0; j<size; j++){
+                if(celdas[i*size+j].classList.contains('selected_number')){
+                    selected++;
+                }
+            }
+            if(selected === size){
+                alert(`El jugador ${carton.id} ha completado una linea Vertical`);
+                listaJugadores.player.forEach(jugador => {
+                    if (jugador.id === parseInt(carton.id)) {
+                        jugador.Puntuacion += 4;
+                        console.log(jugador.Puntuacion);
+                    }
 
+                   
+                });
+                
+                return;
+            } 
+        }
+    });
+}
+
+function compararLineaDiagonal(size){
+    const cartones = document.querySelectorAll('.carton');
+    cartones.forEach(carton => {
+        const celdas = carton.querySelectorAll('.celda');
+        let selected = 0;
+        for(let i=0; i<size; i++){
+            if(celdas[i*size+i].classList.contains('selected_number')){
+                selected++;
+            }
+        }
+        if(selected === size){
+            alert(`El jugador ${carton.id} ha completado una linea diagonal`);
             listaJugadores.player.forEach(jugador => {
                 if (jugador.id === parseInt(carton.id)) {
                     jugador.Puntuacion += 4;
-
                     console.log(jugador.Puntuacion);
                 }
             });
-        }
-
+            
+            return;
+        } 
     });
+}
+
+function compararLineas(size){
+    compararLineaVertical(size);
+    compararLineaHorizontal(size);
+    compararLineaDiagonal(size);
+}
+
+
+function Bingo(size){
+    const cartones = document.querySelectorAll('.carton');
+    cartones.forEach(carton => {
+        const celdas = carton.querySelectorAll('.celda');
+        let selected = 0;
+        celdas.forEach(celda => {
+            if (celda.classList.contains('selected_number')) {
+                selected++;
+            }
+        });
+        if(selected === size*size){
+            alert(`El jugador ${carton.id} ha ganado`);
+            listaJugadores.player.forEach(jugador => {
+                if (jugador.id === parseInt(carton.id)) {
+                    jugador.Puntuacion += 16;
+                    console.log(jugador.Puntuacion);
+                    endgame();
+                }
+            });
+        }
+    });
+}
+
+
+function endgame(){
+    limpiarzone();
+   // mostrarLeaderboard();
 }
