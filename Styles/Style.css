@@ -1,4 +1,4 @@
-:root{
+:root {
 
     --main: #cc2649;
     --secondary: #992c4b;
@@ -8,52 +8,142 @@
     --senary: #005f6a;
     --mainFont: 'Sixtyfour', sans-serif;
 
+
+    /* Posible modo claro*/
+
+    --clarMain: #f6d365;
+    --clarSecondary: #fda085;
+    --clarTertiary: #f6d365;
+    --clarQuaternary: #f6d365;
+    --clarQuinary: #f6d365;
+    --clarSenary: #f6d365;
+
+
 }
 
-*, *::before, *::after{
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html
-{
+/* Estilos de la página principal*/
+html {
     font-size: 62.5%;
 }
 
-body{
+body {
     font-family: var(--mainFont);
     font-size: 1.6rem;
     line-height: 1.6;
     background-color: var(--quaternary);
+    display: flex; /*Flex heredado para que el footer siempre este abajo, se sobreescribe para lo que no lo necesite*/
+    flex-direction: column;
+    min-height: 100rem;
 }
-h1{
+
+
+/*Estilo de los hs*/
+h1 {
     font-size: 3.6rem;
     font-family: var(--mainFont);
     color: var(--main);
     text-align: center;
     margin: 2rem 0;
 }
-.container{
-    width: 90%;
-    margin: 0 auto;
-    max-width: 120rem;
-    display: flex;
-    flex-direction: column;
-}
-h2{
+
+h2 {
     font-size: 3rem;
     font-family: var(--mainFont);
     color: var(--main);
     margin: 2rem 0;
 }
 
-.leaderboard{
-    max-width: fit-content;
-   
-}   
+/* Contenedor principal */
+.main-container {
+    width: 90%;
+    margin: 0 auto;
+    max-width: 120rem;
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-evenly;
+    align-items: center;
+}
 
-.players{
+@media screen and (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+    
+}
+
+
+/*Pude haber usado main y section, pero me dio caliweba porque ya habia empezado jeje
+    Informacion del juego, columna 2 de la pagina principal
+
+*/
+.info {
+    max-width: fit-content;
+    padding: 1rem;
+}
+
+.info h2 {
+    font-size: 3rem;
+    margin: 1rem;
+    text-align: center;
+}
+
+.info p {
+    margin-top: 2rem;
+    ;
+    font-size: 2.2rem;
+    font-weight: bolder;
+    background-color: var(--quinary);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+
+}
+
+/*Animacion que es overengineering pero que me gusta siempre usar*/
+.info span {
+    font-size: 2rem;
+    margin: 1rem;
+    font-weight: bold;
+
+    text-transform: uppercase;
+    background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+
+    color: #000;
+    background-clip: text;
+    text-fill-color: transpaent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 5s linear infinite;
+
+    display: inline-block;
+
+}
+
+@keyframes textclip {
+    to {
+        background-position: 200% center;
+    }
+}
+
+
+/*Segunda seccion de la principal, leaderboard, la lista despues se inyecta desde js*/
+.leaderboard {
+    max-width: fit-content;
+}
+
+.players {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -62,4 +152,215 @@ h2{
     background-color: var(--quinary);
     border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+}
+
+/*Buttons!!!!!!!!!!!!!!!!!!!!!!*/
+.button-play {
+    display: block;
+    margin: 2rem auto;
+    padding: 12.4rem 2rem;
+
+    font-size: 2.2rem;
+    font-weight: bolder;
+
+    text-transform: uppercase;
+    background-color: var(--main);
+    color: var(--quaternary);
+
+
+    border-radius: 1rem;
+
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    text-align: center;
+    text-decoration: none;
+
+}
+
+.button-play:hover {
+    transform: scale(1.1);
+    background-color: var(--secondary);
+    color: var(--quaternary);
+}
+
+.button-play:active {
+    transform: scale(1);
+    background-color: var(--tertiary);
+    color: var(--quaternary);
+}
+
+
+
+/* Estilo de los formularios, pensar si hacer varios o almacenar*/
+
+.form-container{
+    margin-left: 20rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+
+
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 4rem;
+    background-color: var(--quinary);
+    border-radius: 1rem;
+    
+    justify-content: center;
+    @media screen and (min-width: 768px)
+    {
+        width: 100rem;
+    }
+    
+    
+}
+.field{
+    padding: 2rem;
+    background-color: var(--quaternary);
+    border-radius: 1rem;
+    color: var(--main);
+    font-size: 2rem;
+    
+}::placeholder{
+    color: white;
+    font-size: 1.5rem;
+    opacity: 0.5;
+
+}
+
+.field:focus{
+    font-size: 2.5rem;
+    font-weight: bold;
+    border: 0.5rem solid var(--main);
+
+}
+
+
+/*More BUTTONSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS*/
+
+.button{
+    font-family: var(--mainFont);
+    padding: 2rem;
+    background-color: var(--main);
+    border-radius: 1rem;
+    color: var(--quaternary);
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    text-align: center;
+    text-decoration: none;
+    text-decoration: none;
+    margin: 2rem 0;
+} 
+
+.button:hover{
+    transform: scale(1.1);
+    background-color: var(--secondary);
+    color: var(--quaternary);
+    transition: all 0.3s;
+}
+
+
+
+
+
+/*  */
+.playzone{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem 0;
+    text-align: center;
+    
+}
+
+
+ .player-list{
+    display: flex;
+    flex-direction: row;
+    gap: 3rem;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 2rem 0;
+    padding: 2rem;
+ 
+  
+
+} 
+
+.player-card{
+    padding: 2rem;
+    background-color: var(--senary);
+    border-radius: 1rem;
+    color: var(--main);
+    font-size: 2rem;
+
+
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+
+    max-width: wrap-content;
+    text-overflow: ellipsis;
+    overflow:hidden;
+
+}
+
+@media screen and (max-width: 768px){
+    .player-list{
+        flex-direction: column;
+    }
+    
+}
+
+
+
+
+
+
+
+.footer{
+    text-align: center;
+    margin-top: auto;
+    font-size: 2rem;
+    color: var(--main);
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: var(--quinary);
+    border-radius: 1rem;
+    padding: 7rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    
+}
+
+
+.error{
+    color: red;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.success{
+    color: green;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 2rem 0;
 }
