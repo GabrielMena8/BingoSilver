@@ -171,29 +171,84 @@ function crearBotonInicio() {
 
 
 function empezarJuego() {
-
+        const botonInicio = document.querySelector('.button-start');
         playzone.removeChild(botonInicio);
+
         let number = parseInt(prompt("Please enter a number between 1 and 5"));
         while (isNaN(number) || number < 1 || number > 5) {
             alert("Invalid input. Please enter a number between 1 and 5");
             number = parseInt(prompt("Please enter a number between 1 and 5"));
 
         }
-        crearTablero(number);
+
+        crearTableros(number);
         console.log(number);
         
     }
 
 
-function crearTablero(size){
-    const tablero = document.createElement('div');
+
+
+
+
+
+function crearTableros(number) {
+    let tablero = document.createElement('div');
     tablero.classList.add('tablero');
+    tablero.style.gridTemplateColumns = `repeat(${listaJugadores.player.length/2}, 1fr)`; //Por si en algun momento toca meter mas de 
+
+
+    for(let i=0; i<listaJugadores.player.length; i++){
+        let carton = document.createElement('div');
+        carton.classList.add('carton');
+        // carton.classList.add('disabled');
+        
+        carton.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
+
+            for (let i = 0; i < number; i++) {
+                let fila = document.createElement('div');
+                fila.classList.add('fila');
+
+                for (let j = 0; j < number; j++) {
+
+                    const celda = document.createElement('div');
+                    let num = generarNumeroAleatorio(1, 50);
+                    let numeros = generateUniqueRandomNumbers();
+                    console.log(numeros);
+                    console.log(num);
+                    celda.classList.add('celda');
+                    celda.textContent = `${num}`;
+                    fila.appendChild(celda);
+                }
+                carton.appendChild(fila);
+            } 
+                tablero.appendChild(carton);
+            }
+
     playzone.appendChild(tablero);
-    const tableroSize = size * size;
-    for(let i = 0; i < tableroSize; i++){
-        const casilla = document.createElement('div');
-        casilla.classList.add('casilla');
-        tablero.appendChild(casilla);
+    console.log(tablero);
+}
+
+
+
+//Ser feliz
+function generarNumeroAleatorio(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+//Dolor de nalgas para que no se repitan
+function generateUniqueRandomNumbers() {
+    let numbers = Array.from({length: 50}, (_, i) => i + 1);
+    let result = [];
+
+    while (numbers.length) {
+        const randomIndex = Math.floor(Math.random() * numbers.length);
+        const number = numbers[randomIndex];
+        numbers.splice(randomIndex, 1);
+        result.push(number);
     }
+
+    return result;
 }
 
