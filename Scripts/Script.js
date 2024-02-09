@@ -9,6 +9,11 @@ const form = document.querySelector('#form');
 const playzone = document.querySelector('.playzone');
 const HTMLleaderboard = document.querySelector('.leaderboard');
 
+let size=0;
+
+
+
+
 const buttonStart = document.querySelector('.button-start');
 //Variables
 const player = { //Objeto para guardar los datos del jugador
@@ -161,11 +166,24 @@ playzone.addEventListener('click', (e) => {
     }
 
     if (e.target.classList.contains('carton')) {
-        seleccionarCarton(e);
+        e.target.classList.toggle('selected');
+        // console.log(e.target);
+        const cartones = document.querySelectorAll('.carton');
+
+        cartones.forEach(carton => {
+            if (carton !== e.target) {
+                console.log(carton);
+                carton.classList.remove('selected');
+               
+            }
+        });
         
     }
-});
+    if (e.target.classList.contains('button-sorteo')) {
+        sorteo();
+    }
 
+});
 
 
 
@@ -197,8 +215,6 @@ function empezarJuego() {
 
 
 
-
-
 function crearTableros(number) {
     let tablero = document.createElement('div');
     tablero.classList.add('tablero');
@@ -207,9 +223,12 @@ function crearTableros(number) {
 
     for(let i=0; i<listaJugadores.player.length; i++){
         let carton = document.createElement('div');
+        let carton_numbers=[];
 
-        //let player = document.createElement('h3');
+        let player = document.createElement('h3');
+        player.textContent = `Jugador ${listaJugadores.player[i].id}`;
 
+        carton.appendChild(player);
         carton.classList.add('carton');
 
         carton.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
@@ -224,7 +243,13 @@ function crearTableros(number) {
 
                     const celda = document.createElement('div');
                     let num = generarNumeroAleatorio(1, 50);
-                    let numeros = generateUniqueRandomNumbers();
+
+
+                    carton_numbers.push(num);
+
+                    console.log(carton_numbers);
+
+                    // let numeros = generateUniqueRandomNumbers();
 
 
 
@@ -233,21 +258,26 @@ function crearTableros(number) {
                     celda.textContent = `${num}`;
                     fila.appendChild(celda);
                 }
+                const matriz= [];
+                matriz.push(carton_numbers);
+                console.log(matriz);
+
                 carton.appendChild(fila);
             } 
                 tablero.appendChild(carton);
             }
 
     playzone.appendChild(tablero);
+
+    agregarBotonSorteo();
+
+    size=number;
 }
-
-
 
 //Ser feliz
 function generarNumeroAleatorio(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
-
 
 //Dolor de nalgas para que no se repitan
 function generateUniqueRandomNumbers() {
@@ -264,17 +294,82 @@ function generateUniqueRandomNumbers() {
     return result;
 }
 
-function seleccionarCarton(e) {
-    
-        e.target.classList.toggle('selected');
-        console.log("Carton seleccionado" + e.target.id);
-
-        for (let i = 0; i < e.target.children.length; i++) {
-            for (let j = 0; j < e.target.children[i].children.length; j++) {
-                e.target.children[i].children[j].classList.toggle('selected');
-            }
-        }
-
+function agregarBotonSorteo() {
+    const botonSorteo = document.createElement('p');
+    botonSorteo.textContent = 'Sortear';
+    botonSorteo.classList.add('button-sorteo');
+    playzone.appendChild(botonSorteo);
 }
 
 
+
+function sorteo() {
+    let numeros = generateUniqueRandomNumbers();
+    let numero = numeros[Math.floor(Math.random() * numeros.length)];
+    //Array con los numeros que ya han salido
+    let numerosSalidos = [];
+    numerosSalidos.push(numero);
+    console.log(numerosSalidos);
+
+    
+    mostrarNumeroSorteado(numero);
+}
+
+function mostrarNumeroSorteado(numero) {
+    const numeroSorteado = document.createElement('h2');
+
+
+
+    numeroSorteado.textContent = `El numero sorteado es: ${numero}`;
+    playzone.appendChild(numeroSorteado);
+    compararNumerosCelda(numero);
+}
+
+
+function compararNumerosCelda(numero) {
+    const cartones = document.querySelectorAll('.carton');
+    cartones.forEach(carton => {
+        const celdas = carton.querySelectorAll('.celda');
+        celdas.forEach(celda => {
+            if (parseInt(celda.textContent) === numero) {
+                celda.classList.add('selected_number');
+            }
+        });
+    });
+    compararLinea(size);
+}
+
+
+
+function compararLinea(n) { //Donde n es el numero de celdas por fila o columna
+    const cartones = document.querySelectorAll('.carton');
+
+    console.log(n);
+    cartones.forEach(carton => {
+        const celdas = carton.querySelectorAll('.celda');
+
+        let selected = 0;
+
+        celdas.forEach(celda => {
+            if (celda.classList.contains('selected_number')) {
+                selected++;
+                console.log(selected);
+
+            }
+        });
+
+
+        if (selected === n) {
+            alert(`El jugador ${carton.id} ha completado una linea`);
+
+            listaJugadores.player.forEach(jugador => {
+                if (jugador.id === parseInt(carton.id)) {
+                    jugador.Puntuacion += 4;
+
+                    console.log(jugador.Puntuacion);
+                }
+            });
+        }
+
+    });
+}
