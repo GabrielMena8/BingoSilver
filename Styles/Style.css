@@ -349,8 +349,6 @@ h2 {
 
  
     
-   
-
 
 
 /* Jugadores  */
@@ -424,16 +422,14 @@ h2 {
 
 .carton{
     display: grid;
-    
     gap: 2rem;
     justify-content: space-evenly;
-     background-color: var(--tertiary); 
+    background-color: var(--tertiary); 
     border-radius: 1rem;
     padding: 2rem;
     align-items: center;
     padding: 2rem;
 }
-
 
 .fila{
     display: grid;
@@ -461,6 +457,24 @@ h2 {
 
 }
 
+@media screen and (max-width: 460px){
+    .carton{
+        width: 90%;
+
+    }
+    .celda{
+        padding: 1rem;
+    }
+
+    .fila{
+        width: 90%;
+    }
+    
+}
+
+
+
+
 .footer{
     text-align: center;
     margin-top: auto;
@@ -485,20 +499,20 @@ h2 {
 
 /*Modificadores*/
 
-.able{
-    cursor: pointer;
+.selected{
     background-color: var(--main);
     color: var(--quaternary);
-    transition: all 0.3s;
+    font-weight: bold;
+    font-size: 2.5rem;
+    border: 0.5rem solid var(--quaternary);
+    border-radius: 1rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: all 0.3s;
     text-align: center;
     text-decoration: none;
+    text-decoration: none;
     margin: 2rem 0;
-}
-
-.disabled{
-    opacity: 1;
-
 }
 
 

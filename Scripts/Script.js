@@ -66,12 +66,14 @@ function agregarJugador(e) { //Funcion para agregar un jugador
         //Se pasa la validacion
         if (listaJugadores.player.length < 4) {
             player.id = listaJugadores.player.length + 1;
+           
             player.Puntuacion = 4 - listaJugadores.player.length;
             listaJugadores.agregarJugador({ ...player });
             mostrarMensaje('Jugador agregado correctamente', 'success');
             limpiarObjeto();
             form.reset();
             mostrarJugadores(listaJugadores);
+            alert('Siguen faltando ' + (4 - listaJugadores.player.length) + ' jugadores para empezar el juego');
 
 
 
@@ -157,7 +159,13 @@ playzone.addEventListener('click', (e) => {
     if (e.target.classList.contains('button-start')) {
         empezarJuego();
     }
+
+    if (e.target.classList.contains('carton')) {
+        seleccionarCarton(e);
+        
+    }
 });
+
 
 
 
@@ -174,15 +182,14 @@ function empezarJuego() {
         const botonInicio = document.querySelector('.button-start');
         playzone.removeChild(botonInicio);
 
-        let number = parseInt(prompt("Please enter a number between 1 and 5"));
-        while (isNaN(number) || number < 1 || number > 5) {
-            alert("Invalid input. Please enter a number between 1 and 5");
-            number = parseInt(prompt("Please enter a number between 1 and 5"));
+        let number = parseInt(prompt("Por favor ingrese un numero entre 1 y 4"));
+        while (isNaN(number) || number < 1 || number > 4) {
+            alert("Entrada invalida, por favor ingrese un numero entre 1 y 4");
+            number = parseInt(prompt("Por favor ingrese un numero entre 1 y 4"));
 
         }
 
         crearTableros(number);
-        console.log(number);
         
     }
 
@@ -200,10 +207,14 @@ function crearTableros(number) {
 
     for(let i=0; i<listaJugadores.player.length; i++){
         let carton = document.createElement('div');
+
+        //let player = document.createElement('h3');
+
         carton.classList.add('carton');
-        // carton.classList.add('disabled');
-        
+
         carton.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
+        console.log(listaJugadores.player[i].id);
+        carton.setAttribute('id', `${listaJugadores.player[i].id}`);
 
             for (let i = 0; i < number; i++) {
                 let fila = document.createElement('div');
@@ -214,8 +225,10 @@ function crearTableros(number) {
                     const celda = document.createElement('div');
                     let num = generarNumeroAleatorio(1, 50);
                     let numeros = generateUniqueRandomNumbers();
-                    console.log(numeros);
-                    console.log(num);
+
+
+
+
                     celda.classList.add('celda');
                     celda.textContent = `${num}`;
                     fila.appendChild(celda);
@@ -226,7 +239,6 @@ function crearTableros(number) {
             }
 
     playzone.appendChild(tablero);
-    console.log(tablero);
 }
 
 
@@ -251,4 +263,18 @@ function generateUniqueRandomNumbers() {
 
     return result;
 }
+
+function seleccionarCarton(e) {
+    
+        e.target.classList.toggle('selected');
+        console.log("Carton seleccionado" + e.target.id);
+
+        for (let i = 0; i < e.target.children.length; i++) {
+            for (let j = 0; j < e.target.children[i].children.length; j++) {
+                e.target.children[i].children[j].classList.toggle('selected');
+            }
+        }
+
+}
+
 
