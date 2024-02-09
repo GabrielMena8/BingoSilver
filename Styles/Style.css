@@ -222,7 +222,7 @@ h2 {
 
 @media screen and (min-width: 768px){
     .form{
-        width: 100%;
+        width: 50%;
     }
     
 }
@@ -461,6 +461,7 @@ h2 {
     padding: 2rem;
     align-items: center;
     padding: 2rem;
+
 }
 
 .carton h3{
@@ -580,13 +581,23 @@ h2 {
     color: var(--quaternary);
     
 }
+.leaderboard-item{
+    background-color: var(--senary);
+    color: var(--main);
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    text-align: center;
+    margin: 1rem 0;
 
-
-.hidden{
-    visibility: hidden;
 }
 
-
+.hidden .celda{
+    visibility: hidden;
+    /* visibility: visible; */
+}
 .error{
     color: red;
     font-size: 2rem;
