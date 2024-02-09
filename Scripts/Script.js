@@ -7,6 +7,9 @@ const player_list = document.querySelector('.player-list'); //Donde se van a mos
 const button = document.querySelector('#button');
 const form = document.querySelector('#form');
 const playzone = document.querySelector('.playzone');
+const HTMLleaderboard = document.querySelector('.leaderboard');
+
+const buttonStart = document.querySelector('.button-start');
 //Variables
 const player = { //Objeto para guardar los datos del jugador
     Numero: 0,
@@ -14,6 +17,8 @@ const player = { //Objeto para guardar los datos del jugador
     Apellido: "",
     Puntuacion: 0
 }
+
+
 
 //#endregion
 
@@ -61,6 +66,7 @@ function agregarJugador(e) { //Funcion para agregar un jugador
         //Se pasa la validacion
         if (listaJugadores.player.length < 4) {
             player.id = listaJugadores.player.length + 1;
+            player.Puntuacion = 4 - listaJugadores.player.length;
             listaJugadores.agregarJugador({ ...player });
             mostrarMensaje('Jugador agregado correctamente', 'success');
             limpiarObjeto();
@@ -68,15 +74,15 @@ function agregarJugador(e) { //Funcion para agregar un jugador
             mostrarJugadores(listaJugadores);
 
 
-            if (listaJugadores.player.length === 4){
+
+            if (listaJugadores.player.length === 4) {
                 mostrarMensaje('Sala llena, no se pueden meter mas jugadores', 'play');
-                const botonInicio = document.createElement('p');
-                botonInicio.textContent = 'Empezar Juego';
-                botonInicio.classList.add('button-start');
-                playzone.appendChild(botonInicio);
+                crearBotonInicio();
+
+
             }
         }
-      
+
     }
 }
 
@@ -138,10 +144,56 @@ function limpiarHtml() {
         player_list.removeChild(player_list.firstChild);
     }
 }
-
-
 function localStorageGuardar() {
     localStorage.setItem('jugadores', JSON.stringify(listaJugadores.player));
     console.log('Guardado');
 
 }
+
+
+/*  Empezar juego */
+
+playzone.addEventListener('click', (e) => {
+    if (e.target.classList.contains('button-start')) {
+        empezarJuego();
+    }
+});
+
+
+
+function crearBotonInicio() {
+    const botonInicio = document.createElement('p');
+    botonInicio.textContent = 'Empezar Juego';
+    botonInicio.classList.add('button-start');
+    playzone.appendChild(botonInicio);
+}
+
+
+
+function empezarJuego() {
+
+        playzone.removeChild(botonInicio);
+        let number = parseInt(prompt("Please enter a number between 1 and 5"));
+        while (isNaN(number) || number < 1 || number > 5) {
+            alert("Invalid input. Please enter a number between 1 and 5");
+            number = parseInt(prompt("Please enter a number between 1 and 5"));
+
+        }
+        crearTablero(number);
+        console.log(number);
+        
+    }
+
+
+function crearTablero(size){
+    const tablero = document.createElement('div');
+    tablero.classList.add('tablero');
+    playzone.appendChild(tablero);
+    const tableroSize = size * size;
+    for(let i = 0; i < tableroSize; i++){
+        const casilla = document.createElement('div');
+        casilla.classList.add('casilla');
+        tablero.appendChild(casilla);
+    }
+}
+
